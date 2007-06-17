@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+
+    <!--
+        The candidate provider that provides candidate registrars for
+        registration.
+    -->
+    <bean id="candidateProvider"
+          class="org.lastbamboo.common.sip.bootstrap.RegistrarCandidateProvider">
+        <constructor-arg><ref bean="uriUtils"/></constructor-arg>
+        <constructor-arg><ref bean="bootstrapServer"/></constructor-arg>
+        </bean>
+
+   <!--
+        The bean that creates a proxy registrar factory that creates proxy
+        registrars that do simple registration using a SIP registrater.
+    -->
+    <bean id="simpleRegistrarFactory"
+          class="org.lastbamboo.common.sip.bootstrap.ProxyRegistrarFactoryImpl">
+        <constructor-arg><ref bean="uriUtils"/></constructor-arg>
+        <constructor-arg><ref bean="sipMessageFactory"/></constructor-arg>
+        <constructor-arg><ref bean="sipTransportLayer"/></constructor-arg>
+        <constructor-arg><ref bean="sipTransactionTracker"/></constructor-arg>
+        <constructor-arg><ref bean="offerProcessorFactory"/></constructor-arg>
+        <constructor-arg><ref bean="sipClientTracker"/></constructor-arg>
+        </bean>
+
+    <!--
+        The registrar factory that creates robust registrars that maintain
+        registrations with multiple SIP proxies.
+    -->
+    <bean id="robustRegistrarFactory"
+          class="org.lastbamboo.common.sip.bootstrap.RobustProxyRegistrarFactoryImpl">
+        <constructor-arg><ref bean="candidateProvider"/></constructor-arg>
+        <constructor-arg><ref local="simpleRegistrarFactory"/></constructor-arg>
+        <constructor-arg><ref bean="threadUtils"/></constructor-arg>
+        </bean>
+
+    <bean id="sipClientLauncher"
+        class="org.lastbamboo.common.sip.bootstrap.SipClientLauncher">
+        <constructor-arg><ref local="robustRegistrarFactory"/></constructor-arg>
+        <constructor-arg><ref bean="sipUriFactory"/></constructor-arg>
+        </bean>
+    </beans>
