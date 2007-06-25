@@ -58,7 +58,7 @@ public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
 
         this.m_connectionMaintainer =
                 new ConnectionMaintainerImpl<URI,URI> (threadUtils, establisher,
-                                                       candidateProvider);
+                                                       candidateProvider, 1);
         }
 
     /**
