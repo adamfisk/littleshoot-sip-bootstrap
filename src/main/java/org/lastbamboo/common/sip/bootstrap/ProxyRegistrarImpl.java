@@ -108,6 +108,10 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
                     this.m_transportLayer, 
                     this.m_sipClientTracker, calculator);
             
+            client.connect();
+            client.register();
+            
+            
             LOG.debug("Adding SIP client!!");
             this.m_sipClientTracker.addSipClient(client, this.m_listener);
             this.m_listener.registered(this.m_client, this.m_proxy);
