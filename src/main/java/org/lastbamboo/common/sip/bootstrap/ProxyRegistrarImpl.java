@@ -5,7 +5,8 @@ import java.net.URI;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.lastbamboo.common.offer.OfferProcessorFactory;
+import org.lastbamboo.common.offer.answer.OfferAnswer;
+import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.sip.client.CrlfDelayCalculator;
 import org.lastbamboo.common.sip.client.DefaultCrlfDelayCalculator;
 import org.lastbamboo.common.sip.client.SipClient;
@@ -44,8 +45,6 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
 
     private final SipMessageFactory m_messageFactory;
 
-    private final OfferProcessorFactory m_offerProcessorFactory;
-
     private final SipClientTracker m_sipClientTracker;
 
     private final UriUtils m_uriUtils;
@@ -53,6 +52,8 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
     private final SipTransactionTracker m_transactionTracker;
 
     private final SipTcpTransportLayer m_transportLayer;
+
+    private final OfferAnswerFactory m_offerAnswerFactory;
 
     /**
      * Creates a new class for registering with an individual SIP proxy.
@@ -67,8 +68,9 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
      * the transport layer.
      * @param transactionTracker The class for keeping track of SIP client
      * transactions.
-     * @param statelessUasFactory The class for creating stateless UAS 
-     * processing classes.
+     * @param offerAnswerFactory The class for creating {@link OfferAnswer}
+     * instances capable of processing offers and answers for an offer/answer
+     * protocol.
      * @param clientTracker The class for keeping track of SIP clients.
      */
     public ProxyRegistrarImpl
@@ -79,7 +81,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
              final SipMessageFactory messageFactory,
              final SipTcpTransportLayer transportLayer,
              final SipTransactionTracker transactionTracker,
-             final OfferProcessorFactory statelessUasFactory,
+             final OfferAnswerFactory offerAnswerFactory,
              final SipClientTracker clientTracker)
         {
         this.m_client = client;
@@ -87,7 +89,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
         this.m_listener = listener;
         this.m_uriUtils = uriUtils;
         this.m_messageFactory = messageFactory;
-        this.m_offerProcessorFactory = statelessUasFactory;
+        this.m_offerAnswerFactory = offerAnswerFactory;
         this.m_sipClientTracker = clientTracker;
         this.m_transactionTracker = transactionTracker;
         this.m_transportLayer = transportLayer;
@@ -104,7 +106,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
             final SipClient client = 
                 new SipClientImpl(this.m_client, this.m_proxy, 
                     this.m_messageFactory, this.m_transactionTracker, 
-                    this.m_offerProcessorFactory, this.m_uriUtils, 
+                    this.m_offerAnswerFactory, this.m_uriUtils, 
                     this.m_transportLayer, 
                     this.m_sipClientTracker, calculator);
             

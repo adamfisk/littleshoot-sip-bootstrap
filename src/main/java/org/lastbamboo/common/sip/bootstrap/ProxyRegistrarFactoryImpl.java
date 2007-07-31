@@ -2,7 +2,7 @@ package org.lastbamboo.common.sip.bootstrap;
 
 import java.net.URI;
 
-import org.lastbamboo.common.offer.OfferProcessorFactory;
+import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.sip.client.SipClientTracker;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.message.SipMessageFactory;
@@ -18,8 +18,6 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory
 
     private final SipMessageFactory m_messageFactory;
 
-    private final OfferProcessorFactory m_offerProcessorFactory;
-
     private final SipClientTracker m_sipClientTracker;
 
     private final UriUtils m_uriUtils;
@@ -27,6 +25,8 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory
     private final SipTransactionTracker m_transactionTracker;
 
     private final SipTcpTransportLayer m_transportLayer;
+
+    private final OfferAnswerFactory m_offerAnswerFactory;
     
     /**
      * Creates a new factory for creating classes for registering with 
@@ -36,25 +36,25 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory
      * @param transportLayer The transport layer for actually writing messages.
      * @param transactionTracker The class for keeping track of SIP 
      * transactions.
-     * @param statelessUasFactory The class for creating stateless UAS 
-     * instances.
      * @param clientTracker The class for keeping track of SIP clients.
      * @param uriUtils The class for manipulating SIP URIs.
+     * @param offerAnswerFactory The class for creating classes capable of
+     * processing offers and answers for an offer/answer protocol.
      */
     public ProxyRegistrarFactoryImpl(
         final SipMessageFactory messageFactory,
         final SipTcpTransportLayer transportLayer,
         final SipTransactionTracker transactionTracker,
-        final OfferProcessorFactory statelessUasFactory,
         final SipClientTracker clientTracker,
-        final UriUtils uriUtils)
+        final UriUtils uriUtils,
+        final OfferAnswerFactory offerAnswerFactory)
         {
         this.m_messageFactory = messageFactory;
         this.m_transportLayer = transportLayer;
         this.m_transactionTracker = transactionTracker;
-        this.m_offerProcessorFactory = statelessUasFactory;
         this.m_sipClientTracker = clientTracker;
         this.m_uriUtils = uriUtils;
+        this.m_offerAnswerFactory = offerAnswerFactory;
         }
 
     /**
@@ -67,7 +67,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory
         {
         return (new ProxyRegistrarImpl (this.m_uriUtils, client, proxy, 
             listener, this.m_messageFactory, this.m_transportLayer, 
-            this.m_transactionTracker, this.m_offerProcessorFactory, 
+            this.m_transactionTracker, this.m_offerAnswerFactory, 
             this.m_sipClientTracker));
         }
     }
