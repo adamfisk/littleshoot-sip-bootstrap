@@ -24,6 +24,7 @@
         <constructor-arg><ref bean="sipTransportLayer"/></constructor-arg>
         <constructor-arg><ref bean="sipTransactionTracker"/></constructor-arg>
         <constructor-arg><ref bean="iceOfferAnswerFactory"/></constructor-arg>
+        <constructor-arg ref="iceOfferAnswerListener"/>
         <constructor-arg><ref bean="sipClientTracker"/></constructor-arg>
         </bean>
 

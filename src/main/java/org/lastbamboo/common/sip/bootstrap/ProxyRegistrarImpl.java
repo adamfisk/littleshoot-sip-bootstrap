@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswer;
 import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
+import org.lastbamboo.common.offer.answer.OfferAnswerListener;
 import org.lastbamboo.common.sip.client.CrlfDelayCalculator;
 import org.lastbamboo.common.sip.client.DefaultCrlfDelayCalculator;
 import org.lastbamboo.common.sip.client.SipClient;
@@ -55,6 +56,8 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
 
     private final OfferAnswerFactory m_offerAnswerFactory;
 
+    private final OfferAnswerListener m_offerAnswerListener;
+
     /**
      * Creates a new class for registering with an individual SIP proxy.
      * 
@@ -71,6 +74,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
      * @param offerAnswerFactory The class for creating {@link OfferAnswer}
      * instances capable of processing offers and answers for an offer/answer
      * protocol.
+     * @param offerAnswerListener The listener for offer/answer events.
      * @param clientTracker The class for keeping track of SIP clients.
      */
     public ProxyRegistrarImpl
@@ -82,6 +86,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
              final SipTcpTransportLayer transportLayer,
              final SipTransactionTracker transactionTracker,
              final OfferAnswerFactory offerAnswerFactory,
+             final OfferAnswerListener offerAnswerListener,
              final SipClientTracker clientTracker)
         {
         this.m_client = client;
@@ -90,6 +95,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
         this.m_uriUtils = uriUtils;
         this.m_messageFactory = messageFactory;
         this.m_offerAnswerFactory = offerAnswerFactory;
+        this.m_offerAnswerListener = offerAnswerListener;
         this.m_sipClientTracker = clientTracker;
         this.m_transactionTracker = transactionTracker;
         this.m_transportLayer = transportLayer;
@@ -106,8 +112,8 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
             final SipClient client = 
                 new SipClientImpl(this.m_client, this.m_proxy, 
                     this.m_messageFactory, this.m_transactionTracker, 
-                    this.m_offerAnswerFactory, this.m_uriUtils, 
-                    this.m_transportLayer, 
+                    this.m_offerAnswerFactory, this.m_offerAnswerListener,
+                    this.m_uriUtils, this.m_transportLayer, 
                     this.m_sipClientTracker, calculator);
             
             client.connect();
