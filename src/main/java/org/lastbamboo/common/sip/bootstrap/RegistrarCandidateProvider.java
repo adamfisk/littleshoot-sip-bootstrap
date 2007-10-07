@@ -16,7 +16,7 @@ import org.lastbamboo.shoot.bootstrap.server.api.BootstrapServer;
 /**
  * The candidate provider that provides candidate registrars.
  */
-public final class RegistrarCandidateProvider implements CandidateProvider
+public final class RegistrarCandidateProvider implements CandidateProvider<URI>
     {
     
     private static final Log LOG = 
@@ -54,12 +54,14 @@ public final class RegistrarCandidateProvider implements CandidateProvider
     /**
      * {@inheritDoc}
      */
-    public Collection getCandidates()
+    public Collection<URI> getCandidates()
         {
+        // TODO: We need to access the list of servers from S3.
         final InetAddress address;
         try
             {
-            address = InetAddress.getByName("lastbamboo.org");
+            address = InetAddress.getByName(
+                "ec2-67-202-11-253.z-1.compute-1.amazonaws.com");
             }
         catch (final UnknownHostException e)
             {
@@ -67,7 +69,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider
             return Collections.emptySet();
             }
         
-        // The URI we are given is the public address (and STUN port) of
+        // The URI we are given is the public address (and SIP port) of
         // this host. To convert to the URI of the proxy we are running,
         // we replace the port with the proxy port.
         final String host = address.getHostAddress();
