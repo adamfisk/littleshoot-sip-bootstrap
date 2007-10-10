@@ -61,7 +61,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         try
             {
             address = InetAddress.getByName(
-                "ec2-67-202-11-253.z-1.compute-1.amazonaws.com");
+                "ec2-67-202-6-199.z-1.compute-1.amazonaws.com");
             }
         catch (final UnknownHostException e)
             {
