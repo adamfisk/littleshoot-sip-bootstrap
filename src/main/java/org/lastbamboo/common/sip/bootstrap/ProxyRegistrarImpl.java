@@ -126,7 +126,9 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
             }
         catch (final IOException e)
             {
-            LOG.warn("Could not register!!", e);
+            // This will frequently happen when, for example, the user has
+            // lost his or her network connection.
+            LOG.debug("Could not register!!", e);
             this.m_listener.registrationFailed(this.m_client, this.m_proxy);
             }
         }
