@@ -111,4 +111,9 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         return (uris);
         */
         }
+
+    public URI getCandidate()
+        {
+        return getCandidates().iterator().next();
+        }
     }
