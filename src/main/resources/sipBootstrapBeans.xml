@@ -10,7 +10,6 @@
     <bean id="candidateProvider"
           class="org.lastbamboo.common.sip.bootstrap.RegistrarCandidateProvider">
         <constructor-arg><ref bean="uriUtils"/></constructor-arg>
-        <constructor-arg><ref bean="bootstrapServer"/></constructor-arg>
         </bean>
 
     </beans>
