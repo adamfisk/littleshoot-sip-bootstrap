@@ -1,5 +1,6 @@
 package org.lastbamboo.common.sip.bootstrap;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -87,7 +88,16 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         {
         final HttpClientGetRequester requester = 
             new HttpClientGetRequester();
-        final String data = requester.request(API_URL);
+        final String data;
+        try
+            {
+            data = requester.request(API_URL);
+            }
+        catch (final IOException e)
+            {
+            LOG.error("Could not access SIP server data");
+            return null;
+            }
         if (StringUtils.isBlank(data) || !data.contains(":"))
             {
             LOG.error("Bad data from server: " + data);
