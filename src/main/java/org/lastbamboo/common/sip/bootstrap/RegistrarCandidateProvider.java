@@ -30,8 +30,6 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
      */
     private static final String DEFAULT_TRANSPORT = "tcp";
 
-    private static final int DEFAULT_PORT = 5060;
-
     private static final String API_URL = 
         "http://www.lastbamboo.org/lastbamboo-server-site/api/sipServer";
 
@@ -79,7 +77,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         // we replace the port with the proxy port.
         final String host = address.getHostAddress();
     
-        final URI uri = m_uriUtils.getSipUri(host, DEFAULT_PORT, 
+        final URI uri = m_uriUtils.getSipUri(host, delegateAddress.getPort(), 
             DEFAULT_TRANSPORT);
         return uri;
         }
