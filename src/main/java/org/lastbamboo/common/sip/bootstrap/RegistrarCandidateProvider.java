@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.lastbamboo.common.http.client.HttpClientGetRequester;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.lastbamboo.common.util.CandidateProvider;
+import org.lastbamboo.common.util.ShootConstants;
 
 /**
  * The candidate provider that provides candidate registrars.
@@ -32,8 +33,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
      */
     private static final String DEFAULT_TRANSPORT = "tcp";
 
-    private static final String API_URL = 
-        "http://www.lastbamboo.org/lastbamboo-server-site/api/sipServer";
+    private static final String API_URL = ShootConstants.SERVER_URL+"/api/sipServer";
 
     private final UriUtils m_uriUtils;
 
