@@ -11,10 +11,8 @@ import java.util.LinkedList;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.lastbamboo.common.http.client.HttpClientGetRequester;
+import org.lastbamboo.common.json.JsonUtils;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.lastbamboo.common.util.CandidateProvider;
 import org.lastbamboo.common.util.ShootConstants;
@@ -50,6 +48,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
     /**
      * {@inheritDoc}
      */
+    /*
     public Collection<URI> getCandidates()
         {
         final URI uri = getCandidate();
@@ -83,7 +82,60 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             DEFAULT_TRANSPORT);
         return uri;
         }
+        */
         
+    public Collection<URI> getCandidates()
+        {
+        LOG.debug("Accessing TURN servers...");
+        final String data = getData();
+        if (StringUtils.isBlank(data))
+            {
+            LOG.error("Bad data from server: " + data);
+            return Collections.emptySet();
+            }
+        final Collection<URI> candidates = new LinkedList<URI>();
+        final Collection<InetSocketAddress> addresses = JsonUtils.getInetAddresses(data);
+        for (final InetSocketAddress isa : addresses)
+            {
+            final InetAddress address = isa.getAddress();
+            
+            // The URI we are given is the public address (and SIP port) of
+            // this host. To convert to the URI of the proxy we are running,
+            // we replace the port with the proxy port.
+            final String host = address.getHostAddress();
+        
+            final URI uri = m_uriUtils.getSipUri(host, isa.getPort(), 
+                DEFAULT_TRANSPORT);
+            candidates.add(uri);
+            }
+        return candidates;
+        }
+    
+    public URI getCandidate()
+        {
+        final Collection<URI> candidates = getCandidates();
+        if (candidates.isEmpty()) return null;
+        return candidates.iterator().next();
+        }
+    
+    private String getData()
+        {
+        final HttpClientGetRequester requester = new HttpClientGetRequester();
+        final String data;
+        try
+            {
+            // Note this will automatically decompress the body if necessary.
+            data = requester.request(API_URL);
+            }
+        catch (final IOException e)
+            {
+            LOG.error("Could not access SIP server data");
+            return null;
+            }
+        return data;
+        }
+        
+    /*
     private static InetSocketAddress getSocketAddress()
         {
         final HttpClientGetRequester requester = 
@@ -119,4 +171,5 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             return null;
             }
         }
+        */
     }
