@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lastbamboo.common.http.client.HttpClientGetRequester;
+import org.lastbamboo.common.http.client.ServiceUnavailableException;
 import org.lastbamboo.common.json.JsonUtils;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.lastbamboo.common.util.CandidateProvider;
@@ -128,6 +129,11 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             data = requester.request(API_URL);
             }
         catch (final IOException e)
+            {
+            LOG.error("Could not access SIP server data");
+            return null;
+            }
+        catch (final ServiceUnavailableException e)
             {
             LOG.error("Could not access SIP server data");
             return null;
