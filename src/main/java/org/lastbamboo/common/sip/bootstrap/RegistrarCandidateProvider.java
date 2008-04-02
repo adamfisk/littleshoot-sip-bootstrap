@@ -32,7 +32,8 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
      */
     private static final String DEFAULT_TRANSPORT = "tcp";
 
-    private static final String API_URL = ShootConstants.SERVER_URL+"/api/sipServer";
+    private static final String API_URL = 
+        ShootConstants.SERVER_URL+"/api/sipServer";
 
     private final UriUtils m_uriUtils;
 
