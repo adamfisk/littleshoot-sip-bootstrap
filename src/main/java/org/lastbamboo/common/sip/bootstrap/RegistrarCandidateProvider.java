@@ -46,49 +46,10 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         {
         m_uriUtils = uriUtils;
         }
-
-    /**
-     * {@inheritDoc}
-     */
-    /*
-    public Collection<URI> getCandidates()
-        {
-        final URI uri = getCandidate();
-        if (uri == null)
-            {
-            return Collections.emptySet();
-            }
-        
-        final Collection<URI> sipServerUris = new LinkedList<URI>();
-        sipServerUris.add(uri);
-        return sipServerUris;
-        }
-
-    public URI getCandidate()
-        {
-        final InetSocketAddress delegateAddress = getSocketAddress();
-        if (delegateAddress == null)
-            {
-            LOG.error("No addresses!!");
-            return null;
-            }
-        
-        final InetAddress address = delegateAddress.getAddress();
-        
-        // The URI we are given is the public address (and SIP port) of
-        // this host. To convert to the URI of the proxy we are running,
-        // we replace the port with the proxy port.
-        final String host = address.getHostAddress();
-    
-        final URI uri = m_uriUtils.getSipUri(host, delegateAddress.getPort(), 
-            DEFAULT_TRANSPORT);
-        return uri;
-        }
-        */
         
     public Collection<URI> getCandidates()
         {
-        LOG.debug("Accessing TURN servers...");
+        LOG.debug("Accessing SIP servers...");
         final String data = getData();
         if (StringUtils.isBlank(data))
             {
@@ -96,7 +57,8 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             return Collections.emptySet();
             }
         final Collection<URI> candidates = new LinkedList<URI>();
-        final Collection<InetSocketAddress> addresses = JsonUtils.getInetAddresses(data);
+        final Collection<InetSocketAddress> addresses = 
+            JsonUtils.getInetAddresses(data);
         for (final InetSocketAddress isa : addresses)
             {
             final InetAddress address = isa.getAddress();
@@ -141,42 +103,4 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             }
         return data;
         }
-        
-    /*
-    private static InetSocketAddress getSocketAddress()
-        {
-        final HttpClientGetRequester requester = 
-            new HttpClientGetRequester();
-        final String data;
-        try
-            {
-            // Note this will automatically decompress the body if necessary.
-            data = requester.request(API_URL);
-            }
-        catch (final IOException e)
-            {
-            LOG.error("Could not access SIP server data");
-            return null;
-            }
-        if (StringUtils.isBlank(data))
-            {
-            LOG.error("Bad data from server: " + data);
-            return null;
-            }
-        
-        try
-            {
-            final JSONObject json = new JSONObject(data);
-            final JSONArray servers = json.getJSONArray("servers");
-            final JSONObject server = servers.getJSONObject(0);
-            return new InetSocketAddress(server.getString("address"), 
-                server.getInt("port"));
-            }
-        catch (final JSONException e)
-            {
-            LOG.error("Could not read JSON: "+data, e);
-            return null;
-            }
-        }
-        */
     }
