@@ -45,27 +45,24 @@ public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
      * @param listener
      *      The listener to be notified of registration events.
      */
-    public RobustProxyRegistrarImpl
-            (final ThreadUtils threadUtils,
-             final URI client,
-             final CandidateProvider<URI> candidateProvider,
-             final ProxyRegistrarFactory registrarFactory,
-             final ProxyRegistrationListener listener)
+    public RobustProxyRegistrarImpl (final URI client,
+        final CandidateProvider<URI> candidateProvider,
+        final ProxyRegistrarFactory registrarFactory,
+        final ProxyRegistrationListener listener)
         {
         final ConnectionEstablisher<URI,URI> establisher =
                 new RegistrarConnectionEstablisher (client, registrarFactory,
                                                     listener);
 
         this.m_connectionMaintainer =
-                new ConnectionMaintainerImpl<URI,URI> (threadUtils, establisher,
+                new ConnectionMaintainerImpl<URI,URI> (establisher,
                                                        candidateProvider, 1);
         }
 
     /**
      * {@inheritDoc}
      */
-    public void register
-            ()
+    public void register ()
         {
         this.m_connectionMaintainer.start ();
         }

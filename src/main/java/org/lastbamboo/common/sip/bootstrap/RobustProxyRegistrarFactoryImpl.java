@@ -4,7 +4,6 @@ import java.net.URI;
 
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.util.CandidateProvider;
-import org.lastbamboo.common.util.ThreadUtils;
 
 /**
  * An implementation of the robust proxy registrar factory implementation.
@@ -24,11 +23,6 @@ public final class RobustProxyRegistrarFactoryImpl
     private final ProxyRegistrarFactory m_registrarFactory;
 
     /**
-     * Thread utilities.
-     */
-    private final ThreadUtils m_threadUtils;
-
-    /**
      * Constructs a new robust proxy registrar factory.
      *
      * @param candidateProvider
@@ -42,12 +36,10 @@ public final class RobustProxyRegistrarFactoryImpl
      */
     public RobustProxyRegistrarFactoryImpl
             (final CandidateProvider<URI> candidateProvider,
-             final ProxyRegistrarFactory registrarFactory,
-             final ThreadUtils threadUtils)
+             final ProxyRegistrarFactory registrarFactory)
         {
         this.m_candidateProvider = candidateProvider;
         this.m_registrarFactory = registrarFactory;
-        this.m_threadUtils = threadUtils;
         }
 
     /**
@@ -57,7 +49,7 @@ public final class RobustProxyRegistrarFactoryImpl
             (final URI client,
              final ProxyRegistrationListener listener)
         {
-        return (new RobustProxyRegistrarImpl (this.m_threadUtils, client, 
+        return (new RobustProxyRegistrarImpl (client, 
             this.m_candidateProvider, this.m_registrarFactory, listener));
         }
     }
