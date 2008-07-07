@@ -56,8 +56,8 @@ public final class SipClientLauncher
 
         // Register with the SIP network.
         final RobustProxyRegistrar registrar =
-                m_registrarFactory.getRegistrar
-                    (client, new NoOpRegistrationListener());
+            m_registrarFactory.getRegistrar
+                (client, new NoOpRegistrationListener());
 
         registrar.register ();
         }

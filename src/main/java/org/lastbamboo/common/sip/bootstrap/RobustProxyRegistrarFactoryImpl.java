@@ -31,12 +31,10 @@ public final class RobustProxyRegistrarFactoryImpl
      * @param registrarFactory
      *      The registrar factory that provides registrars for single
      *      registrations.
-     * @param threadUtils
-     *      Thread utilities.
      */
-    public RobustProxyRegistrarFactoryImpl
-            (final CandidateProvider<URI> candidateProvider,
-             final ProxyRegistrarFactory registrarFactory)
+    public RobustProxyRegistrarFactoryImpl (
+        final CandidateProvider<URI> candidateProvider,
+        final ProxyRegistrarFactory registrarFactory)
         {
         this.m_candidateProvider = candidateProvider;
         this.m_registrarFactory = registrarFactory;
@@ -45,9 +43,8 @@ public final class RobustProxyRegistrarFactoryImpl
     /**
      * {@inheritDoc}
      */
-    public RobustProxyRegistrar getRegistrar
-            (final URI client,
-             final ProxyRegistrationListener listener)
+    public RobustProxyRegistrar getRegistrar (final URI client,
+        final ProxyRegistrationListener listener)
         {
         return (new RobustProxyRegistrarImpl (client, 
             this.m_candidateProvider, this.m_registrarFactory, listener));

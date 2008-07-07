@@ -32,18 +32,12 @@ public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
     /**
      * Constructs a new robust proxy registrar.
      *
-     * @param threadUtils
-     *      Thread utilities.
-     * @param client
-     *      The client to register.
-     * @param candidateProvider
-     *      The candidate provider that provides candidate registrars for
-     *      registration.
-     * @param registrarFactory
-     *      The registrar factory that provides registrars for single
-     *      registrations.
-     * @param listener
-     *      The listener to be notified of registration events.
+     * @param client The client to register.
+     * @param candidateProvider The candidate provider that provides candidate 
+     *  registrars for registration.
+     * @param registrarFactory The registrar factory that provides registrars 
+     *  for single registrations.
+     * @param listener The listener to be notified of registration events.
      */
     public RobustProxyRegistrarImpl (final URI client,
         final CandidateProvider<URI> candidateProvider,
@@ -51,12 +45,12 @@ public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
         final ProxyRegistrationListener listener)
         {
         final ConnectionEstablisher<URI,URI> establisher =
-                new RegistrarConnectionEstablisher (client, registrarFactory,
-                                                    listener);
+            new RegistrarConnectionEstablisher (client, registrarFactory,
+                listener);
 
         this.m_connectionMaintainer =
-                new ConnectionMaintainerImpl<URI,URI> (establisher,
-                                                       candidateProvider, 1);
+            new ConnectionMaintainerImpl<URI,URI> (establisher, 
+                candidateProvider, 1);
         }
 
     /**
@@ -70,8 +64,7 @@ public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
     /**
      * {@inheritDoc}
      */
-    public Optional<URI> mostRecentlyActive
-            ()
+    public Optional<URI> mostRecentlyActive ()
         {
         return this.m_connectionMaintainer.getMostRecentlyActive ();
         }
