@@ -54,18 +54,14 @@ public final class RegistrarConnectionEstablisher
     /**
      * Constructs a new registrar connection establisher.
      *
-     * @param client
-     *      The client to register.
-     * @param registrarFactory
-     *      The registrar factory that provides registrars for single
-     *      registrations.
-     * @param listener
-     *      The listener to be notified of registration events.
+     * @param client The client to register.
+     * @param registrarFactory The registrar factory that provides registrars 
+     * for single registrations.
+     * @param listener The listener to be notified of registration events.
      */
-    public RegistrarConnectionEstablisher
-            (final URI client,
-             final ProxyRegistrarFactory registrarFactory,
-             final ProxyRegistrationListener listener)
+    public RegistrarConnectionEstablisher (final URI client,
+        final ProxyRegistrarFactory registrarFactory,
+        final ProxyRegistrationListener listener)
         {
         this.m_client = client;
         this.m_registrarFactory = registrarFactory;
@@ -82,12 +78,7 @@ public final class RegistrarConnectionEstablisher
      */
     private class MyListener implements ProxyRegistrationListener
         {
-        /**
-         * {@inheritDoc}
-         */
-        public void registered
-                (final URI client,
-                 final URI proxy)
+        public void registered (final URI client, final URI proxy)
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
                     RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
@@ -97,52 +88,33 @@ public final class RegistrarConnectionEstablisher
             RegistrarConnectionEstablisher.this.m_listener.registered (client, proxy);
             }
 
-        /**
-         * {@inheritDoc}
-         */
-        public void reRegistered
-                (final URI client,
-                 final URI proxy)
+        public void reRegistered (final URI client, final URI proxy)
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                    RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
+                RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
 
             connectionMaintainerListener.reconnected ();
 
             RegistrarConnectionEstablisher.this.m_listener.reRegistered (client, proxy);
             }
 
-        /**
-         * {@inheritDoc}
-         */
-        public void registrationFailed
-                (final URI client,
-                 final URI proxy)
+        public void registrationFailed (final URI client, final URI proxy)
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
                     RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
 
             connectionMaintainerListener.connectionFailed ();
-
             RegistrarConnectionEstablisher.this.stopNotifying (proxy);
-
             RegistrarConnectionEstablisher.this.m_listener.registrationFailed (client, proxy);
             }
 
-        /**
-         * {@inheritDoc}
-         */
-        public void unregistered
-                (final URI client,
-                 final URI proxy)
+        public void unregistered (final URI client, final URI proxy)
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
                     RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
 
             connectionMaintainerListener.disconnected ();
-
             RegistrarConnectionEstablisher.this.stopNotifying (proxy);
-
             RegistrarConnectionEstablisher.this.m_listener.unregistered (client, proxy);
             }
         }
@@ -151,14 +123,11 @@ public final class RegistrarConnectionEstablisher
      * Signals us to start notifying a given connection maintainer listener of
      * connection events related to a given registrar.
      *
-     * @param registrar
-     *      The URI of the registrar.
-     * @param listener
-     *      The listener to notify.
+     * @param registrar The URI of the registrar.
+     * @param listener The listener to notify.
      */
-    private void startNotifying
-            (final URI registrar,
-             final ConnectionMaintainerListener<URI> listener)
+    private void startNotifying (final URI registrar,
+        final ConnectionMaintainerListener<URI> listener)
         {
         synchronized (this.m_connectionMaintainerListeners)
             {
@@ -176,11 +145,9 @@ public final class RegistrarConnectionEstablisher
      * Signals us to stop notifying the connection maintainer listener of
      * connection events related to a given registrar.
      *
-     * @param registrar
-     *      The URI of the registrar.
+     * @param registrar The URI of the registrar.
      */
-    private void stopNotifying
-            (final URI registrar)
+    private void stopNotifying (final URI registrar)
         {
         synchronized (this.m_connectionMaintainerListeners)
             {
@@ -197,15 +164,13 @@ public final class RegistrarConnectionEstablisher
      * Returns the connection maintainer listener that is listening for
      * connection events related to a given registrar.
      *
-     * @param registrar
-     *      The URI of the registrar.
+     * @param registrar The URI of the registrar.
      *
-     * @return
-     *      The connection maintainer listener that is listening for connection
-     *      events related to a given registrar.
+     * @return The connection maintainer listener that is listening for 
+     * connection events related to a given registrar.
      */
-    private ConnectionMaintainerListener<URI> getConnectionMaintainerListener
-            (final URI registrar)
+    private ConnectionMaintainerListener<URI> getConnectionMaintainerListener(
+        final URI registrar)
         {
         Assert.isTrue
                 (this.m_connectionMaintainerListeners.containsKey (registrar),
@@ -218,9 +183,8 @@ public final class RegistrarConnectionEstablisher
     /**
      * {@inheritDoc}
      */
-    public void establish
-            (final URI serverId,
-             final ConnectionMaintainerListener<URI> listener)
+    public void establish (final URI serverId,
+        final ConnectionMaintainerListener<URI> listener)
         {
         LOG.debug ("Registering with: " + serverId);
 
