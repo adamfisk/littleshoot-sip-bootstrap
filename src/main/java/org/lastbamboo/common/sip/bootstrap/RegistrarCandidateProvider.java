@@ -93,12 +93,12 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             }
         catch (final IOException e)
             {
-            LOG.error("Could not access SIP server data");
+            LOG.error("Could not access SIP server data", e);
             return null;
             }
         catch (final ServiceUnavailableException e)
             {
-            LOG.error("Could not access SIP server data");
+            LOG.error("Could not access SIP server data", e);
             return null;
             }
         return data;
