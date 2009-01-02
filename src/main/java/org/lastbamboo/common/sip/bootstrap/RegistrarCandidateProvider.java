@@ -1,6 +1,5 @@
 package org.lastbamboo.common.sip.bootstrap;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -8,15 +7,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.lastbamboo.common.http.client.HttpClientGetRequester;
-import org.lastbamboo.common.http.client.ServiceUnavailableException;
-import org.lastbamboo.common.json.JsonUtils;
+import org.apache.commons.io.IOExceptionWithCause;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.lastbamboo.common.util.CandidateProvider;
-import org.lastbamboo.common.util.ShootConstants;
+import org.lastbamboo.common.util.SrvUtil;
+import org.lastbamboo.common.util.SrvUtilImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The candidate provider that provides candidate registrars.
@@ -24,16 +21,12 @@ import org.lastbamboo.common.util.ShootConstants;
 public final class RegistrarCandidateProvider implements CandidateProvider<URI>
     {
     
-    private static final Log LOG = 
-        LogFactory.getLog(RegistrarCandidateProvider.class);
+    private final Logger m_log = LoggerFactory.getLogger(getClass());
     
     /**
      * The default transport to use to connect to this host.
      */
     private static final String DEFAULT_TRANSPORT = "tcp";
-
-    private static final String API_URL = 
-        ShootConstants.SERVER_URL+"/api/sipServer";
 
     private final UriUtils m_uriUtils;
 
@@ -49,16 +42,21 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         
     public Collection<URI> getCandidates()
         {
-        LOG.debug("Accessing SIP servers...");
-        final String data = getData();
-        if (StringUtils.isBlank(data))
-            {
-            LOG.error("Bad data from server: " + data);
-            return Collections.emptySet();
-            }
+        m_log.debug("Accessing SIP servers...");
         final Collection<URI> candidates = new LinkedList<URI>();
-        final Collection<InetSocketAddress> addresses = 
-            JsonUtils.getInetAddresses(data);
+        final SrvUtil srv = new SrvUtilImpl();
+        
+        final Collection<InetSocketAddress> addresses;
+        try
+            {
+            addresses = srv.getAddresses("_sip._tcp.littleshoot.org");
+            }
+        catch (final IOExceptionWithCause e)
+            {
+            m_log.error("Could not locate addresses", e);
+            return Collections.emptyList();
+            }
+        
         for (final InetSocketAddress isa : addresses)
             {
             final InetAddress address = isa.getAddress();
@@ -72,6 +70,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
                 DEFAULT_TRANSPORT);
             candidates.add(uri);
             }
+        
         return candidates;
         }
     
@@ -81,26 +80,5 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         if (candidates.isEmpty()) return null;
         return candidates.iterator().next();
         }
-    
-    private String getData()
-        {
-        final HttpClientGetRequester requester = new HttpClientGetRequester();
-        final String data;
-        try
-            {
-            // Note this will automatically decompress the body if necessary.
-            data = requester.request(API_URL);
-            }
-        catch (final IOException e)
-            {
-            LOG.error("Could not access SIP server data from "+API_URL, e);
-            return null;
-            }
-        catch (final ServiceUnavailableException e)
-            {
-            LOG.error("Could not access SIP server data from "+API_URL, e);
-            return null;
-            }
-        return data;
-        }
+
     }
