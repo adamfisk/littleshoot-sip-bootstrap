@@ -1,5 +1,6 @@
 package org.lastbamboo.common.sip.bootstrap;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -51,7 +52,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             {
             addresses = srv.getAddresses("_sip._tcp.littleshoot.org");
             }
-        catch (final IOExceptionWithCause e)
+        catch (final IOException e)
             {
             m_log.error("Could not locate addresses", e);
             return Collections.emptyList();
