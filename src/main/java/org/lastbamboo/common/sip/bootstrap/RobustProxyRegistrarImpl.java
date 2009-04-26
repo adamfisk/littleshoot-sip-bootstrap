@@ -8,7 +8,6 @@ import org.lastbamboo.common.util.ConnectionEstablisher;
 import org.lastbamboo.common.util.ConnectionMaintainer;
 import org.lastbamboo.common.util.ConnectionMaintainerImpl;
 import org.lastbamboo.common.util.Optional;
-import org.lastbamboo.common.util.ThreadUtils;
 
 /**
  * A proxy registrar that attempts to be robust by maintaining registrations to

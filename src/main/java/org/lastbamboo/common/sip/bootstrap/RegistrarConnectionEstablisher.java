@@ -193,8 +193,8 @@ public final class RegistrarConnectionEstablisher
         try
             {
             final ProxyRegistrar registrar =
-                    this.m_registrarFactory.getRegistrar (this.m_client, serverId,
-                                                     this.m_myListener);
+                this.m_registrarFactory.getRegistrar (this.m_client, serverId,
+                                                 this.m_myListener);
 
             registrar.register ();
             }
