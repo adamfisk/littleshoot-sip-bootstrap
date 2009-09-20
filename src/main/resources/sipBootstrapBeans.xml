@@ -7,7 +7,7 @@
         The candidate provider that provides candidate registrars for
         registration.
     -->
-    <bean id="candidateProvider"
+    <bean lazy-init="true" id="candidateProvider"
           class="org.lastbamboo.common.sip.bootstrap.RegistrarCandidateProvider">
         <constructor-arg><ref bean="uriUtils"/></constructor-arg>
         </bean>
