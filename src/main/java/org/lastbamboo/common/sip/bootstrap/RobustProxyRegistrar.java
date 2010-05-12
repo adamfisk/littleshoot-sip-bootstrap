@@ -14,9 +14,7 @@ public interface RobustProxyRegistrar extends ProxyRegistrar
      * Otherwise, a <code>Some</code> object is returned whose contents is the
      * URI of the registrar.
      *
-     * @return
-     *      The URI that was most recently active.
+     * @return The URI that was most recently active.
      */
-    Optional mostRecentlyActive
-            ();
+    Optional mostRecentlyActive();
     }

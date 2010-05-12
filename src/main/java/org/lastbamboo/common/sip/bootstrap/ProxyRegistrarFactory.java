@@ -14,19 +14,12 @@ public interface ProxyRegistrarFactory
      * registration for a given client and proxy. A given listener will be
      * notified of registration events.
      * 
-     * @param client
-     *              The client for which the registrar will handle
-     *              registration.
-     * @param proxy
-     *              The proxy with which the registrar will register.
-     * @param listener
-     *              The listener to notify of registration events.
-     * 
-     * @return
-     *              A proxy registrar.
+     * @param client The client for which the registrar will handle 
+     * registration.
+     * @param proxy The proxy with which the registrar will register.
+     * @param listener The listener to notify of registration events.
+     * @return A proxy registrar.
      */
-    ProxyRegistrar getRegistrar
-            (URI client,
-             URI proxy,
-             ProxyRegistrationListener listener);
+    ProxyRegistrar getRegistrar(URI client, URI proxy,
+        ProxyRegistrationListener listener);
     }

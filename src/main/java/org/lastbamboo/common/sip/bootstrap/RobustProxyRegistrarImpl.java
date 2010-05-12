@@ -15,12 +15,6 @@ import org.lastbamboo.common.util.Optional;
  */
 public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
     {
-    /**
-     * The log for this class.
-     */
-    // Currently unused.
-//    private static final Log LOG =
-//            LogFactory.getLog (RobustProxyRegistrarImpl.class);
 
     /**
      * The connection maintainer used to maintain connections to multiple

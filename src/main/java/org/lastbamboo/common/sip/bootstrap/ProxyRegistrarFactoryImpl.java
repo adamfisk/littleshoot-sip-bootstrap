@@ -72,10 +72,8 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory
     /**
      * {@inheritDoc}
      */
-    public ProxyRegistrar getRegistrar
-            (final URI client,
-             final URI proxy,
-             final ProxyRegistrationListener listener)
+    public ProxyRegistrar getRegistrar(final URI client, final URI proxy,
+        final ProxyRegistrationListener listener)
         {
         return (new ProxyRegistrarImpl (this.m_uriUtils, client, proxy, 
             listener, this.m_messageFactory, this.m_transportLayer, 

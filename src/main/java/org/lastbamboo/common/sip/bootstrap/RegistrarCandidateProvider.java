@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.apache.commons.io.IOExceptionWithCause;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.lastbamboo.common.util.CandidateProvider;
 import org.lastbamboo.common.util.SrvUtil;

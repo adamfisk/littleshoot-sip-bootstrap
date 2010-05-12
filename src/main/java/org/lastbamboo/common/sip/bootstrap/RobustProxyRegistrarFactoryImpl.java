@@ -25,12 +25,10 @@ public final class RobustProxyRegistrarFactoryImpl
     /**
      * Constructs a new robust proxy registrar factory.
      *
-     * @param candidateProvider
-     *      The candidate provider that provides candidate registrars for
-     *      registration.
-     * @param registrarFactory
-     *      The registrar factory that provides registrars for single
-     *      registrations.
+     * @param candidateProvider The candidate provider that provides candidate 
+     * registrars for registration.
+     * @param registrarFactory The registrar factory that provides registrars 
+     * for single registrations.
      */
     public RobustProxyRegistrarFactoryImpl (
         final CandidateProvider<URI> candidateProvider,

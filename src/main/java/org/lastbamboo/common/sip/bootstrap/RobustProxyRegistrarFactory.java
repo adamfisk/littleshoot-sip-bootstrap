@@ -15,15 +15,11 @@ public interface RobustProxyRegistrarFactory
      * registration for a given client and proxy.  A given listener will be
      * notified of registration events.
      * 
-     * @param client
-     *      The client the registrar will handle registration for.
-     * @param listener
-     *      The listener to notify of registration events.
+     * @param client The client the registrar will handle registration for.
+     * @param listener The listener to notify of registration events.
      * 
-     * @return
-     *      A proxy registrar.
+     * @return A proxy registrar.
      */
-    RobustProxyRegistrar getRegistrar
-            (URI client,
-             ProxyRegistrationListener listener);
+    RobustProxyRegistrar getRegistrar (URI client, 
+        ProxyRegistrationListener listener);
     }

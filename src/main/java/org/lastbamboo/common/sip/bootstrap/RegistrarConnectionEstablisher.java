@@ -16,13 +16,12 @@ import org.springframework.util.Assert;
  * registrars.
  */
 public final class RegistrarConnectionEstablisher
-        implements ConnectionEstablisher<URI,URI>
+    implements ConnectionEstablisher<URI,URI>
     {
     /**
      * The log for this class.
      */
-    private static final Log LOG =
-            LogFactory.getLog (RegistrarConnectionEstablisher.class);
+    private final Log LOG = LogFactory.getLog (getClass());
 
     /**
      * The client to register.
@@ -44,7 +43,7 @@ public final class RegistrarConnectionEstablisher
      * for events on those registrars.
      */
     private final Map<URI,ConnectionMaintainerListener<URI>>
-            m_connectionMaintainerListeners;
+        m_connectionMaintainerListeners;
 
     /**
      * The listener we use to listen for registration events.
@@ -81,10 +80,8 @@ public final class RegistrarConnectionEstablisher
         public void registered (final URI client, final URI proxy)
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                    RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-
+                RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
             connectionMaintainerListener.connected (proxy);
-
             RegistrarConnectionEstablisher.this.m_listener.registered (client, proxy);
             }
 
@@ -92,9 +89,7 @@ public final class RegistrarConnectionEstablisher
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
                 RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-
             connectionMaintainerListener.reconnected ();
-
             RegistrarConnectionEstablisher.this.m_listener.reRegistered (client, proxy);
             }
 
@@ -102,7 +97,6 @@ public final class RegistrarConnectionEstablisher
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
                     RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-
             connectionMaintainerListener.connectionFailed ();
             RegistrarConnectionEstablisher.this.stopNotifying (proxy);
             RegistrarConnectionEstablisher.this.m_listener.registrationFailed (client, proxy);
@@ -111,7 +105,7 @@ public final class RegistrarConnectionEstablisher
         public void unregistered (final URI client, final URI proxy)
             {
             final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                    RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
+                RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
 
             connectionMaintainerListener.disconnected ();
             RegistrarConnectionEstablisher.this.stopNotifying (proxy);
@@ -133,9 +127,9 @@ public final class RegistrarConnectionEstablisher
             {
             // We should not yet have a listener for the given registrar.
             Assert.isTrue
-                    (!this.m_connectionMaintainerListeners.containsKey (registrar),
-                     "We should not yet have a listener for the given " +
-                            "registrar: " + registrar);
+                (!this.m_connectionMaintainerListeners.containsKey (registrar),
+                 "We should not yet have a listener for the given " +
+                        "registrar: " + registrar);
 
             this.m_connectionMaintainerListeners.put (registrar, listener);
             }
