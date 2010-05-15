@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -49,14 +52,14 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         final Collection<InetSocketAddress> addresses;
         try
             {
-            addresses = srv.getAddresses("_sip._tcp.littleshoot.org");
+            addresses = srv.getAddresses("_sip._tcp2.littleshoot.org");
             }
         catch (final IOException e)
             {
             m_log.error("Could not locate addresses", e);
             return Collections.emptyList();
             }
-        
+
         for (final InetSocketAddress isa : addresses)
             {
             final InetAddress address = isa.getAddress();
