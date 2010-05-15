@@ -49,17 +49,25 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         final Collection<URI> candidates = new LinkedList<URI>();
         final SrvUtil srv = new SrvUtilImpl();
         
-        final Collection<InetSocketAddress> addresses;
+        final Collection<InetSocketAddress> addresses = new ArrayList<InetSocketAddress>();
+        /*
         try
             {
-            addresses = srv.getAddresses("_sip._tcp2.littleshoot.org");
+            addresses = srv.getAddresses("_sip._tcp.littleshoot.org");
             }
         catch (final IOException e)
             {
             m_log.error("Could not locate addresses", e);
             return Collections.emptyList();
             }
-
+        */
+        
+        try {
+            addresses.add(new InetSocketAddress(InetAddress.getByName("sip2.littleshoot.org"), 5061));
+        } catch (UnknownHostException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         for (final InetSocketAddress isa : addresses)
             {
             final InetAddress address = isa.getAddress();
