@@ -6,8 +6,11 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.lastbamboo.common.util.CandidateProvider;
 import org.lastbamboo.common.util.SrvUtil;
@@ -30,14 +33,49 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
 
     private final UriUtils m_uriUtils;
 
+    private final InetSocketAddress m_registrarAddress;
+
+    private final String m_srvAddress;
+
     /**
      * Constructs a new registrar candidate provider.
      * 
      * @param uriUtils SIP URI utilities class.
+     * @param srvAddress The address for looking up DNS SRV records.
      */
-    public RegistrarCandidateProvider(final UriUtils uriUtils)
+    public RegistrarCandidateProvider(final UriUtils uriUtils, 
+        final String srvAddress)
         {
-        m_uriUtils = uriUtils;
+        this(uriUtils, srvAddress, null);
+        }
+    
+    /**
+     * Constructs a new registrar candidate provider.
+     * 
+     * @param uriUtils SIP URI utilities class.
+     * @param registrarAddress The address of the registrar. The preferred
+     * method is to use SRV records, however.
+     */
+    public RegistrarCandidateProvider(final UriUtils uriUtils, 
+        final InetSocketAddress registrarAddress)
+        {
+        this(uriUtils, "", registrarAddress);
+        }
+    
+    /**
+     * Constructs a new registrar candidate provider.
+     * 
+     * @param uriUtils SIP URI utilities class.
+     * @param srvAddress The address for looking up DNS SRV records.
+     * @param registrarAddress The address of the registrar. The preferred
+     * method is to use SRV records, however.
+     */
+    public RegistrarCandidateProvider(final UriUtils uriUtils, 
+        final String srvAddress, final InetSocketAddress registrarAddress)
+        {
+        this.m_uriUtils = uriUtils;
+        this.m_srvAddress = srvAddress;
+        this.m_registrarAddress = registrarAddress;
         }
         
     public Collection<URI> getCandidates()
@@ -46,18 +84,31 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
         final Collection<URI> candidates = new LinkedList<URI>();
         final SrvUtil srv = new SrvUtilImpl();
         
-        final Collection<InetSocketAddress> addresses;
-        try
+        final List<InetSocketAddress> addressList = 
+            new LinkedList<InetSocketAddress>();
+        
+        if (this.m_registrarAddress != null)
             {
-            addresses = srv.getAddresses("_sip._tcp2.littleshoot.org");
+            addressList.add(this.m_registrarAddress);
             }
-        catch (final IOException e)
+        if (StringUtils.isNotBlank(this.m_srvAddress)) 
             {
-            m_log.error("Could not locate addresses", e);
-            return Collections.emptyList();
+            try
+                {
+                addressList.addAll(srv.getAddresses(this.m_srvAddress));
+                }
+            catch (final IOException e)
+                {
+                m_log.error("Could not locate addresses", e);
+                return Collections.emptyList();
+                }
             }
+        
+        Collections.shuffle(addressList);
+        
+        final Collection<InetSocketAddress> addresses = 
+            new HashSet<InetSocketAddress>(addressList);
 
-        // addresses.add(new InetSocketAddress("75.101.156.158", 5061));
         for (final InetSocketAddress isa : addresses)
             {
             final InetAddress address = isa.getAddress();
