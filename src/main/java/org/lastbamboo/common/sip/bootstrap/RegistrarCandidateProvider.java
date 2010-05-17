@@ -57,6 +57,7 @@ public final class RegistrarCandidateProvider implements CandidateProvider<URI>
             return Collections.emptyList();
             }
 
+        // addresses.add(new InetSocketAddress("75.101.156.158", 5061));
         for (final InetSocketAddress isa : addresses)
             {
             final InetAddress address = isa.getAddress();
