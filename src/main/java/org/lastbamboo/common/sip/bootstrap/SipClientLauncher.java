@@ -2,8 +2,8 @@ package org.lastbamboo.common.sip.bootstrap;
 
 import java.net.URI;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.SipUriFactory;
 
@@ -16,7 +16,7 @@ public final class SipClientLauncher
     /**
      * The log for this class.
      */
-    private static final Log LOG = LogFactory.getLog (SipClientLauncher.class);
+    private static final Logger LOG = LoggerFactory.getLogger (SipClientLauncher.class);
 
     /**
      * The factory used to create SIP URIs.

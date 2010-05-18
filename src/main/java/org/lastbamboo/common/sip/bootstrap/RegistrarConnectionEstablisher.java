@@ -4,8 +4,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.util.ConnectionEstablisher;
 import org.lastbamboo.common.util.ConnectionMaintainerListener;
@@ -21,7 +21,7 @@ public final class RegistrarConnectionEstablisher
     /**
      * The log for this class.
      */
-    private final Log LOG = LogFactory.getLog (getClass());
+    private final Logger LOG = LoggerFactory.getLogger (getClass());
 
     /**
      * The client to register.

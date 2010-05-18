@@ -3,8 +3,8 @@ package org.lastbamboo.common.sip.bootstrap;
 import java.io.IOException;
 import java.net.URI;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswer;
 import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerListener;
@@ -28,7 +28,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
     /**
      * The log for this class.
      */
-    private static Log LOG = LogFactory.getLog (ProxyRegistrarImpl.class);
+    private final Logger LOG = LoggerFactory.getLogger (ProxyRegistrarImpl.class);
 
     /**
      * The client to register.
