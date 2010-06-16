@@ -52,14 +52,38 @@ public final class SipClientLauncher
         {
         LOG.debug("Registering...");
         // Set up the URI used as the 'From' for SIP messages.
-        final URI client = m_sipUriFactory.createSipUri (userId);
+        final URI sipUri = m_sipUriFactory.createSipUri (userId);
+        register(sipUri);
+        }
 
+    /**
+     * Registers a given user ID with SIP proxies so that other people can
+     * connect to her.
+     *
+     * @param userId The identifier of the user to register.
+     */
+    public void register(final URI sipUri) 
+        {
         // Register with the SIP network.
         final RobustProxyRegistrar registrar =
             m_registrarFactory.getRegistrar
-                (client, new NoOpRegistrationListener());
+                (sipUri, new NoOpRegistrationListener());
 
         registrar.register ();
+        }
+
+    /**
+     * Registers a given user ID with SIP proxies so that other people can
+     * connect to her.
+     *
+     * @param userId The identifier of the user to register.
+     */
+    public void register(final String id)
+        {
+        LOG.debug("Registering...");
+        // Set up the URI used as the 'From' for SIP messages.
+        final URI sipUri = m_sipUriFactory.createSipUri (id);
+        register(sipUri);
         }
     
     private static final class NoOpRegistrationListener 
