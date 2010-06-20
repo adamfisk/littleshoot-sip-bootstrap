@@ -72,6 +72,7 @@ public final class RobustProxyRegistrarFactoryImpl
                 
                 for (final InetSocketAddress isa : addresses)
                     {
+                    m_log.info("Processing candidate address: {}", isa);
                     final InetAddress address = isa.getAddress();
                     
                     // The URI we are given is the public address (and SIP port) of
