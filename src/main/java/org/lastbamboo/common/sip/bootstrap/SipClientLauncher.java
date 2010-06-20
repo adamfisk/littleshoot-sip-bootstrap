@@ -53,7 +53,7 @@ public final class SipClientLauncher
         {
         LOG.debug("Registering...");
         // Set up the URI used as the 'From' for SIP messages.
-        final URI sipUri = m_sipUriFactory.createSipUri (userId);
+        final URI sipUri = m_sipUriFactory.createSipUri ("LittleShoot-ID-"+userId);
         register(sipUri);
         }
 
