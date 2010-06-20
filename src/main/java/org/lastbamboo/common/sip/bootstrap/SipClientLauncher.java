@@ -16,7 +16,8 @@ public final class SipClientLauncher
     /**
      * The log for this class.
      */
-    private final Logger LOG = LoggerFactory.getLogger (getClass());
+    private static final Logger LOG = 
+        LoggerFactory.getLogger (SipClientLauncher.class);
 
     /**
      * The factory used to create SIP URIs.
