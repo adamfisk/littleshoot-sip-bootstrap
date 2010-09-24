@@ -70,6 +70,8 @@ public final class RobustProxyRegistrarFactoryImpl
                 final Collection<InetSocketAddress> addresses =
                     sipCandidateProvider.getCandidates();
                 
+                m_log.info("Connecting to servers: {}", addresses);
+                
                 for (final InetSocketAddress isa : addresses)
                     {
                     m_log.info("Processing candidate address: {}", isa);
