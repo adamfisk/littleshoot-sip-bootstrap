@@ -4,13 +4,15 @@ import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.lastbamboo.common.offer.answer.OfferAnswerTransactionListener;
+import org.lastbamboo.common.p2p.P2PSignalingClient;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.SipUriFactory;
 
 /**
  * This class kicks off all SIP client services.
  */
-public final class SipClientLauncher
+public final class SipClientLauncher implements P2PSignalingClient
     {
 
     /**
@@ -111,5 +113,18 @@ public final class SipClientLauncher
             LOG.debug("Got unregistered");
             }
         
+        }
+
+    public void offer(final URI sipUri, final byte[] offer,
+        final OfferAnswerTransactionListener transactionListener) 
+        {
+        LOG.error("Offer not supported");
+        throw new UnsupportedOperationException("Offer not supported");
+        }
+
+    public void login(final String user, final String password) 
+        {
+        LOG.error("Offer not supported");
+        throw new UnsupportedOperationException("Offer not supported");
         }
     }
