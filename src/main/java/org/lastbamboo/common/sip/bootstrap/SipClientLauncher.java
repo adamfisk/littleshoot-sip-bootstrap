@@ -122,7 +122,7 @@ public final class SipClientLauncher implements P2PSignalingClient
         throw new UnsupportedOperationException("Offer not supported");
         }
 
-    public void login(final String user, final String password) 
+    public String login(final String user, final String password) 
         {
         LOG.error("Offer not supported");
         throw new UnsupportedOperationException("Offer not supported");
