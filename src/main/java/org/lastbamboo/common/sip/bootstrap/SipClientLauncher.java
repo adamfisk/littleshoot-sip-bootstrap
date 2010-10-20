@@ -1,11 +1,18 @@
 package org.lastbamboo.common.sip.bootstrap;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerTransactionListener;
+import org.lastbamboo.common.p2p.DefaultTcpUdpSocket;
 import org.lastbamboo.common.p2p.P2PSignalingClient;
+import org.lastbamboo.common.p2p.TcpUdpSocket;
+import org.lastbamboo.common.sip.client.SipClient;
+import org.lastbamboo.common.sip.client.SipClientTracker;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.SipUriFactory;
 
@@ -31,18 +38,32 @@ public final class SipClientLauncher implements P2PSignalingClient
      */
     private final RobustProxyRegistrarFactory m_registrarFactory;
 
+    private final SipClientTracker m_sipClientTracker;
+
+    private final OfferAnswerFactory m_offerAnswerFactory;
+
+    private final int m_relayWaitTime;
+
     /**
      * Launches a SIP client.
-     *
+     * 
+     * @param sipClientTracker Keeps track of SIP clients.
      * @param registrarFactory The object for maintaining a registration with a 
      * SIP proxy.
      * @param sipUriFactory The factory for creating SIP URIs from user IDs.
+     * @param offerAnswerFactory Factory for creating offers and answers.
+     * @param relayWaitTime The time to wait before using a relay.
      */
-    public SipClientLauncher(final RobustProxyRegistrarFactory registrarFactory,
-        final SipUriFactory sipUriFactory)
+    public SipClientLauncher(final SipClientTracker sipClientTracker, 
+        final RobustProxyRegistrarFactory registrarFactory,
+        final SipUriFactory sipUriFactory, 
+        final OfferAnswerFactory offerAnswerFactory, final int relayWaitTime)
         {
+        this.m_sipClientTracker = sipClientTracker;
         this.m_registrarFactory = registrarFactory;
         this.m_sipUriFactory = sipUriFactory;
+        this.m_offerAnswerFactory = offerAnswerFactory;
+        this.m_relayWaitTime = relayWaitTime;
         }
 
     /**
@@ -126,5 +147,23 @@ public final class SipClientLauncher implements P2PSignalingClient
         {
         LOG.error("Offer not supported");
         throw new UnsupportedOperationException("Offer not supported");
+        }
+
+    public Socket newSocket (final URI sipUri) throws IOException
+        {
+        LOG.trace ("Creating SIP socket for URI: {}", sipUri);
+        final SipClient client = this.m_sipClientTracker.getSipClient();
+        if (client == null)
+            {
+            LOG.warn("No available SIP clients!!");
+            throw new IOException (
+                "No available connections to SIP proxies!!");
+            }
+        
+        final TcpUdpSocket tcpUdpSocket = 
+            new DefaultTcpUdpSocket(client, this.m_offerAnswerFactory,
+                this.m_relayWaitTime);
+        
+        return tcpUdpSocket.newSocket(sipUri);
         }
     }
