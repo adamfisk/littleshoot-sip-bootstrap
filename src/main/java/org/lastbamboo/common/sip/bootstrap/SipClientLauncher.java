@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerTransactionListener;
 import org.lastbamboo.common.p2p.DefaultTcpUdpSocket;
-import org.lastbamboo.common.p2p.P2PSignalingClient;
+import org.lastbamboo.common.p2p.P2PClient;
 import org.lastbamboo.common.p2p.TcpUdpSocket;
 import org.lastbamboo.common.sip.client.SipClient;
 import org.lastbamboo.common.sip.client.SipClientTracker;
@@ -19,7 +19,7 @@ import org.lastbamboo.common.sip.stack.SipUriFactory;
 /**
  * This class kicks off all SIP client services.
  */
-public final class SipClientLauncher implements P2PSignalingClient
+public final class SipClientLauncher implements P2PClient
     {
 
     /**
