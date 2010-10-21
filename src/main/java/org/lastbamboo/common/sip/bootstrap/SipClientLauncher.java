@@ -145,8 +145,15 @@ public final class SipClientLauncher implements P2PClient
 
     public String login(final String user, final String password) 
         {
-        LOG.error("Offer not supported");
-        throw new UnsupportedOperationException("Offer not supported");
+        LOG.error("Login not supported");
+        throw new UnsupportedOperationException("Login not supported");
+        }
+    
+    public String login(final String user, final String password, 
+        final String id) throws IOException 
+        {
+        LOG.error("Login not supported");
+        throw new UnsupportedOperationException("Login not supported");
         }
 
     public Socket newSocket (final URI sipUri) throws IOException
@@ -166,4 +173,5 @@ public final class SipClientLauncher implements P2PClient
         
         return tcpUdpSocket.newSocket(sipUri);
         }
+
     }
