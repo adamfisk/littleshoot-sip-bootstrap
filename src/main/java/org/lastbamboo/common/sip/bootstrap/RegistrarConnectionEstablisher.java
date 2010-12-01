@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.util.ConnectionEstablisher;
 import org.lastbamboo.common.util.ConnectionMaintainerListener;
-import org.springframework.util.Assert;
 
 /**
  * The connection establisher used to establish connections with SIP
@@ -126,11 +125,6 @@ public final class RegistrarConnectionEstablisher
         synchronized (this.m_connectionMaintainerListeners)
             {
             // We should not yet have a listener for the given registrar.
-            Assert.isTrue
-                (!this.m_connectionMaintainerListeners.containsKey (registrar),
-                 "We should not yet have a listener for the given " +
-                        "registrar: " + registrar);
-
             this.m_connectionMaintainerListeners.put (registrar, listener);
             }
         }
@@ -145,11 +139,6 @@ public final class RegistrarConnectionEstablisher
         {
         synchronized (this.m_connectionMaintainerListeners)
             {
-            Assert.isTrue
-                    (this.m_connectionMaintainerListeners.containsKey (registrar),
-                     "We should have a listener for the given registrar: " +
-                            registrar);
-
             this.m_connectionMaintainerListeners.remove (registrar);
             }
         }
@@ -166,11 +155,6 @@ public final class RegistrarConnectionEstablisher
     private ConnectionMaintainerListener<URI> getConnectionMaintainerListener(
         final URI registrar)
         {
-        Assert.isTrue
-                (this.m_connectionMaintainerListeners.containsKey (registrar),
-                 "We should have a listener for the given registrar: " +
-                        registrar);
-
         return this.m_connectionMaintainerListeners.get (registrar);
         }
 
