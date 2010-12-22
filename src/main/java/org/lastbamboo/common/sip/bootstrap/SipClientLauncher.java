@@ -6,6 +6,7 @@ import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.lastbamboo.common.offer.answer.NoAnswerException;
 import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerTransactionListener;
 import org.lastbamboo.common.p2p.DefaultTcpUdpSocket;
@@ -156,7 +157,8 @@ public final class SipClientLauncher implements P2PClient
         throw new UnsupportedOperationException("Login not supported");
         }
 
-    public Socket newSocket (final URI sipUri) throws IOException
+    public Socket newSocket (final URI sipUri) throws IOException, 
+        NoAnswerException
         {
         LOG.trace ("Creating SIP socket for URI: {}", sipUri);
         final SipClient client = this.m_sipClientTracker.getSipClient();
