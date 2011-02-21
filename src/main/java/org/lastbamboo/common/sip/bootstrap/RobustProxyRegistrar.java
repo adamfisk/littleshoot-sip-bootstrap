@@ -1,6 +1,6 @@
 package org.lastbamboo.common.sip.bootstrap;
 
-import org.lastbamboo.common.util.Optional;
+import org.littleshoot.util.Optional;
 
 /**
  * A interface to an object robustly handles registrations by maintaining

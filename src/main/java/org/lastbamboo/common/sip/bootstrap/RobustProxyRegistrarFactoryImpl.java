@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
-import org.lastbamboo.common.util.CandidateProvider;
+import org.littleshoot.util.CandidateProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

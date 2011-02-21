@@ -7,8 +7,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
-import org.lastbamboo.common.util.ConnectionEstablisher;
-import org.lastbamboo.common.util.ConnectionMaintainerListener;
+import org.littleshoot.util.ConnectionEstablisher;
+import org.littleshoot.util.ConnectionMaintainerListener;
 
 /**
  * The connection establisher used to establish connections with SIP
