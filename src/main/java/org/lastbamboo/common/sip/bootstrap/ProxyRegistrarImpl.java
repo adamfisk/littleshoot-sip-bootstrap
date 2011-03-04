@@ -23,8 +23,7 @@ import org.lastbamboo.common.sip.stack.util.UriUtils;
 /**
  * An implementation of the proxy registrar interface.
  */
-public final class ProxyRegistrarImpl implements ProxyRegistrar
-    {
+public final class ProxyRegistrarImpl implements ProxyRegistrar {
     /**
      * The log for this class.
      */
@@ -81,16 +80,15 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
      * @param clientTracker The class for keeping track of SIP clients.
      * @param idleSipSessionListener Listener for idle SIP sessions.
      */
-    public ProxyRegistrarImpl (final UriUtils uriUtils, final URI client,
-        final URI proxy, final ProxyRegistrationListener listener,
-        final SipMessageFactory messageFactory,
-        final SipTcpTransportLayer transportLayer,
-        final SipTransactionTracker transactionTracker,
-        final OfferAnswerFactory offerAnswerFactory,
-        final OfferAnswerListener offerAnswerListener,
-        final SipClientTracker clientTracker, 
-        final IdleSipSessionListener idleSipSessionListener)
-        {
+    public ProxyRegistrarImpl(final UriUtils uriUtils, final URI client,
+            final URI proxy, final ProxyRegistrationListener listener,
+            final SipMessageFactory messageFactory,
+            final SipTcpTransportLayer transportLayer,
+            final SipTransactionTracker transactionTracker,
+            final OfferAnswerFactory offerAnswerFactory,
+            final OfferAnswerListener offerAnswerListener,
+            final SipClientTracker clientTracker,
+            final IdleSipSessionListener idleSipSessionListener) {
         this.m_client = client;
         this.m_proxy = proxy;
         this.m_listener = listener;
@@ -102,38 +100,29 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar
         this.m_transactionTracker = transactionTracker;
         this.m_transportLayer = transportLayer;
         this.m_idleSipSessionListener = idleSipSessionListener;
-        }
+    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void register ()
-        {
+    public void register() {
         final CrlfDelayCalculator calculator = new DefaultCrlfDelayCalculator();
-        try
-            {
-            final SipClient client = 
-                new SipClientImpl(this.m_client, this.m_proxy, 
-                    this.m_messageFactory, this.m_transactionTracker, 
-                    this.m_offerAnswerFactory, this.m_offerAnswerListener,
-                    this.m_uriUtils, this.m_transportLayer, 
-                    this.m_sipClientTracker, calculator,
+        try {
+            final SipClient client = new SipClientImpl(this.m_client,
+                    this.m_proxy, this.m_messageFactory,
+                    this.m_transactionTracker, this.m_offerAnswerFactory,
+                    this.m_offerAnswerListener, this.m_uriUtils,
+                    this.m_transportLayer, this.m_sipClientTracker, calculator,
                     this.m_idleSipSessionListener);
-            
+
             client.connect();
             client.register();
-            
-            
+
             LOG.debug("Adding SIP client!!");
             this.m_sipClientTracker.addSipClient(client, this.m_listener);
             this.m_listener.registered(this.m_client, this.m_proxy);
-            }
-        catch (final IOException e)
-            {
+        } catch (final IOException e) {
             // This will frequently happen when, for example, the user has
             // lost his or her network connection.
             LOG.debug("Could not register!!", e);
             this.m_listener.registrationFailed(this.m_client, this.m_proxy);
-            }
         }
     }
+}
