@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URI;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.lastbamboo.common.offer.answer.IceMediaStreamDesc;
 import org.lastbamboo.common.offer.answer.NoAnswerException;
 import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerTransactionListener;
@@ -16,6 +15,8 @@ import org.lastbamboo.common.sip.client.SipClient;
 import org.lastbamboo.common.sip.client.SipClientTracker;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.SipUriFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class kicks off all SIP client services.
@@ -153,8 +154,27 @@ public final class SipClientLauncher implements P2PClient {
             throw new IOException("No available connections to SIP proxies!!");
         }
 
+        final IceMediaStreamDesc stream = 
+            new IceMediaStreamDesc(true, true, "message", "http", 1, false);
         final TcpUdpSocket tcpUdpSocket = new DefaultTcpUdpSocket(client,
-                this.m_offerAnswerFactory, this.m_relayWaitTime);
+                this.m_offerAnswerFactory, this.m_relayWaitTime, stream);
+
+        return tcpUdpSocket.newSocket(sipUri);
+    }
+
+    public Socket newUnreliableSocket(final URI sipUri) throws IOException,
+            NoAnswerException {
+        LOG.trace("Creating SIP socket for URI: {}", sipUri);
+        final SipClient client = this.m_sipClientTracker.getSipClient();
+        if (client == null) {
+            LOG.warn("No available SIP clients!!");
+            throw new IOException("No available connections to SIP proxies!!");
+        }
+
+        final IceMediaStreamDesc desc = 
+            IceMediaStreamDesc.newUnreliableUdpStream();
+        final TcpUdpSocket tcpUdpSocket = new DefaultTcpUdpSocket(client,
+                this.m_offerAnswerFactory, this.m_relayWaitTime, desc);
 
         return tcpUdpSocket.newSocket(sipUri);
     }
