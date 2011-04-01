@@ -13,8 +13,7 @@ import org.littleshoot.util.Optional;
  * A proxy registrar that attempts to be robust by maintaining registrations to
  * multiple SIP proxies.
  */
-public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
-    {
+public class RobustProxyRegistrarImpl implements ProxyRegistrar {
 
     /**
      * The connection maintainer used to maintain connections to multiple
@@ -32,33 +31,29 @@ public class RobustProxyRegistrarImpl implements RobustProxyRegistrar
      *  for single registrations.
      * @param listener The listener to be notified of registration events.
      */
-    public RobustProxyRegistrarImpl (final URI client,
-        final CandidateProvider<URI> candidateProvider,
-        final ProxyRegistrarFactory registrarFactory,
-        final ProxyRegistrationListener listener)
-        {
-        final ConnectionEstablisher<URI,URI> establisher =
-            new RegistrarConnectionEstablisher (client, registrarFactory,
-                listener);
+    public RobustProxyRegistrarImpl(final URI client,
+            final CandidateProvider<URI> candidateProvider,
+            final ProxyRegistrarFactory registrarFactory,
+            final ProxyRegistrationListener listener) {
+        final ConnectionEstablisher<URI, URI> establisher = 
+            new RegistrarConnectionEstablisher(client, registrarFactory, 
+                    listener);
 
-        this.m_connectionMaintainer =
-            new ConnectionMaintainerImpl<URI,URI> (establisher, 
-                candidateProvider, 1);
-        }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void register ()
-        {
-        this.m_connectionMaintainer.start ();
-        }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Optional<URI> mostRecentlyActive ()
-        {
-        return this.m_connectionMaintainer.getMostRecentlyActive ();
-        }
+        this.m_connectionMaintainer = new ConnectionMaintainerImpl<URI, URI>(
+                establisher, candidateProvider, 1);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void register() {
+        this.m_connectionMaintainer.start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<URI> mostRecentlyActive() {
+        return this.m_connectionMaintainer.getMostRecentlyActive();
+    }
+}

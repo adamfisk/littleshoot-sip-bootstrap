@@ -20,6 +20,6 @@ public interface RobustProxyRegistrarFactory
      * 
      * @return A proxy registrar.
      */
-    RobustProxyRegistrar getRegistrar (URI client, 
+    ProxyRegistrar getRegistrar (URI client, 
         ProxyRegistrationListener listener);
     }

@@ -17,7 +17,6 @@ import org.lastbamboo.common.sip.stack.transaction.client.SipTransactionTracker;
 import org.lastbamboo.common.sip.stack.transport.SipTcpTransportLayer;
 import org.lastbamboo.common.sip.stack.util.UriUtils;
 import org.littleshoot.util.SessionSocketListener;
-import org.littleshoot.util.SocketListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -30,11 +30,6 @@ public final class SipClientLauncher implements P2PClient {
         LoggerFactory.getLogger (SipClientLauncher.class);
 
     /**
-     * The factory used to create SIP URIs.
-     */
-    private final SipUriFactory m_sipUriFactory;
-
-    /**
      * The object for maintaining a registration with a SIP proxy.
      */
     private final RobustProxyRegistrarFactory m_registrarFactory;
@@ -45,39 +40,39 @@ public final class SipClientLauncher implements P2PClient {
 
     private final int m_relayWaitTime;
 
+    private volatile boolean loggedIn;
+
     /**
      * Launches a SIP client.
      * 
      * @param sipClientTracker Keeps track of SIP clients.
      * @param registrarFactory The object for maintaining a registration with a 
      * SIP proxy.
-     * @param sipUriFactory The factory for creating SIP URIs from user IDs.
      * @param offerAnswerFactory Factory for creating offers and answers.
      * @param relayWaitTime The time to wait before using a relay.
      */
     public SipClientLauncher(final SipClientTracker sipClientTracker,
             final RobustProxyRegistrarFactory registrarFactory,
-            final SipUriFactory sipUriFactory,
             final OfferAnswerFactory offerAnswerFactory, 
             final int relayWaitTime) {
         this.m_sipClientTracker = sipClientTracker;
         this.m_registrarFactory = registrarFactory;
-        this.m_sipUriFactory = sipUriFactory;
         this.m_offerAnswerFactory = offerAnswerFactory;
         this.m_relayWaitTime = relayWaitTime;
     }
-
-    /**
-     * Registers a given user ID with SIP proxies so that other people can
-     * connect to her.
-     *
-     * @param userId The identifier of the user to register.
-     */
-    public void register(final long userId) {
+    
+    public String login(final String user, final String password) {
         LOG.debug("Registering...");
         // Set up the URI used as the 'From' for SIP messages.
-        final URI sipUri = m_sipUriFactory.createSipUri(userId);
+        final URI sipUri = SipUriFactory.createSipUri(user);
         register(sipUri);
+        this.loggedIn = true;
+        return sipUri.toASCIIString();
+    }
+
+    public String login(final String user, final String password,
+        final String id) throws IOException {
+        return login(user, password);
     }
 
     /**
@@ -86,25 +81,16 @@ public final class SipClientLauncher implements P2PClient {
      *
      * @param userId The identifier of the user to register.
      */
-    public void register(final URI sipUri) {
+    private void register(final URI sipUri) {
+        if (loggedIn) {
+            LOG.info("Already logged in -- not logging in again.");
+            return;
+        }
         // Register with the SIP network.
-        final RobustProxyRegistrar registrar = m_registrarFactory.getRegistrar(
+        final ProxyRegistrar registrar = m_registrarFactory.getRegistrar(
                 sipUri, new NoOpRegistrationListener());
 
         registrar.register();
-    }
-
-    /**
-     * Registers a given user ID with SIP proxies so that other people can
-     * connect to her.
-     *
-     * @param userId The identifier of the user to register.
-     */
-    public void register(final String id) {
-        LOG.debug("Registering...");
-        // Set up the URI used as the 'From' for SIP messages.
-        final URI sipUri = m_sipUriFactory.createSipUri(id);
-        register(sipUri);
     }
 
     private static final class NoOpRegistrationListener implements
@@ -132,17 +118,6 @@ public final class SipClientLauncher implements P2PClient {
             final OfferAnswerTransactionListener transactionListener) {
         LOG.error("Offer not supported");
         throw new UnsupportedOperationException("Offer not supported");
-    }
-
-    public String login(final String user, final String password) {
-        LOG.error("Login not supported");
-        throw new UnsupportedOperationException("Login not supported");
-    }
-
-    public String login(final String user, final String password,
-            final String id) throws IOException {
-        LOG.error("Login not supported");
-        throw new UnsupportedOperationException("Login not supported");
     }
 
     public Socket newSocket(final URI sipUri) throws IOException,
