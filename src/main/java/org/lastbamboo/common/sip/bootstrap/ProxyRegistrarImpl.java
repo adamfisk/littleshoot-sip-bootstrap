@@ -61,6 +61,8 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
 
     private final SessionSocketListener socketListener;
 
+    private final SessionSocketListener callSocketListener;
+
     /**
      * Creates a new class for registering with an individual SIP proxy.
      * 
@@ -89,6 +91,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
             final SipTransactionTracker transactionTracker,
             final OfferAnswerFactory offerAnswerFactory,
             final SessionSocketListener socketListener,
+            final SessionSocketListener callSocketListener,
             final SipClientTracker clientTracker,
             final IdleSipSessionListener idleSipSessionListener) {
         this.m_client = client;
@@ -98,6 +101,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
         this.m_messageFactory = messageFactory;
         this.m_offerAnswerFactory = offerAnswerFactory;
         this.socketListener = socketListener;
+        this.callSocketListener = callSocketListener;
         this.m_sipClientTracker = clientTracker;
         this.m_transactionTracker = transactionTracker;
         this.m_transportLayer = transportLayer;
@@ -110,7 +114,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
             final SipClient client = new SipClientImpl(this.m_client,
                     this.m_proxy, this.m_messageFactory,
                     this.m_transactionTracker, this.m_offerAnswerFactory,
-                    this.socketListener, this.m_uriUtils,
+                    this.socketListener, this.callSocketListener, this.m_uriUtils,
                     this.m_transportLayer, this.m_sipClientTracker, calculator,
                     this.m_idleSipSessionListener);
 

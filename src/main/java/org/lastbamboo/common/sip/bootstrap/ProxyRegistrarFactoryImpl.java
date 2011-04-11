@@ -33,6 +33,8 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
     private final IdleSipSessionListener m_idleSipSessionListener;
 
     private final SessionSocketListener socketListener;
+
+    private final SessionSocketListener callSocketListener;
     
     /**
      * Creates a new factory for creating classes for registering with 
@@ -55,6 +57,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
             final SipClientTracker clientTracker, final UriUtils uriUtils,
             final OfferAnswerFactory offerAnswerFactory,
             final SessionSocketListener socketListener,
+            final SessionSocketListener callSocketListener,
             final IdleSipSessionListener idleSipSessionListener) {
         this.m_messageFactory = messageFactory;
         this.m_transportLayer = transportLayer;
@@ -63,6 +66,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
         this.m_uriUtils = uriUtils;
         this.m_offerAnswerFactory = offerAnswerFactory;
         this.socketListener = socketListener;
+        this.callSocketListener = callSocketListener;
         this.m_idleSipSessionListener = idleSipSessionListener;
     }
 
@@ -74,7 +78,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
         return (new ProxyRegistrarImpl(this.m_uriUtils, client, proxy,
                 listener, this.m_messageFactory, this.m_transportLayer,
                 this.m_transactionTracker, this.m_offerAnswerFactory,
-                this.socketListener, this.m_sipClientTracker,
-                this.m_idleSipSessionListener));
+                this.socketListener, this.callSocketListener, 
+                this.m_sipClientTracker, this.m_idleSipSessionListener));
     }
 }

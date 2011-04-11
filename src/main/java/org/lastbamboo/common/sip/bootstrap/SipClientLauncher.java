@@ -145,8 +145,10 @@ public final class SipClientLauncher implements P2PClient {
             throw new IOException("No available connections to SIP proxies!!");
         }
 
-        final IceMediaStreamDesc desc = 
-            IceMediaStreamDesc.newUnreliableUdpStream();
+        final IceMediaStreamDesc desc =
+            new IceMediaStreamDesc(true, true, "application", "udp", 1, true, 
+                    true);
+            //IceMediaStreamDesc.newUnreliableUdpStream();
         final TcpUdpSocket tcpUdpSocket = new DefaultTcpUdpSocket(client,
                 this.m_offerAnswerFactory, this.m_relayWaitTime, desc);
 
