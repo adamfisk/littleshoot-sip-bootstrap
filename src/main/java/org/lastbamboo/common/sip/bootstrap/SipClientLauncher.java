@@ -15,6 +15,7 @@ import org.lastbamboo.common.sip.client.SipClient;
 import org.lastbamboo.common.sip.client.SipClientTracker;
 import org.lastbamboo.common.sip.client.util.ProxyRegistrationListener;
 import org.lastbamboo.common.sip.stack.SipUriFactory;
+import org.littleshoot.util.KeyStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,15 +112,15 @@ public final class SipClientLauncher implements P2PClient {
         public void unregistered(URI client, URI proxy) {
             LOG.debug("Got unregistered");
         }
-
     }
 
-    public void offer(final URI sipUri, final byte[] offer,
-            final OfferAnswerTransactionListener transactionListener) {
+    public void offer(URI uri, byte[] offer,
+            OfferAnswerTransactionListener transactionListener,
+            KeyStorage keyStore) throws IOException {
         LOG.error("Offer not supported");
         throw new UnsupportedOperationException("Offer not supported");
     }
-
+    
     public Socket newSocket(final URI sipUri) throws IOException,
             NoAnswerException {
         LOG.trace("Creating SIP socket for URI: {}", sipUri);

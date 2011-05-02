@@ -1,5 +1,6 @@
 package org.lastbamboo.common.sip.bootstrap;
 
+import java.net.InetSocketAddress;
 import java.net.URI;
 
 import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
@@ -32,9 +33,9 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
 
     private final IdleSipSessionListener m_idleSipSessionListener;
 
-    private final SessionSocketListener socketListener;
-
     private final SessionSocketListener callSocketListener;
+
+    private final InetSocketAddress serverAddress;
     
     /**
      * Creates a new factory for creating classes for registering with 
@@ -48,7 +49,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
      * @param uriUtils The class for manipulating SIP URIs.
      * @param offerAnswerFactory The class for creating classes capable of
      * processing offers and answers for an offer/answer protocol.
-     * @param socketListener Listener for incoming sockets.
+     * @param serverAddress Listener for incoming sockets.
      * @param idleSipSessionListener Listener for idle SIP sessions.
      */
     public ProxyRegistrarFactoryImpl(final SipMessageFactory messageFactory,
@@ -56,7 +57,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
             final SipTransactionTracker transactionTracker,
             final SipClientTracker clientTracker, final UriUtils uriUtils,
             final OfferAnswerFactory offerAnswerFactory,
-            final SessionSocketListener socketListener,
+            final InetSocketAddress serverAddress,
             final SessionSocketListener callSocketListener,
             final IdleSipSessionListener idleSipSessionListener) {
         this.m_messageFactory = messageFactory;
@@ -65,7 +66,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
         this.m_sipClientTracker = clientTracker;
         this.m_uriUtils = uriUtils;
         this.m_offerAnswerFactory = offerAnswerFactory;
-        this.socketListener = socketListener;
+        this.serverAddress = serverAddress;
         this.callSocketListener = callSocketListener;
         this.m_idleSipSessionListener = idleSipSessionListener;
     }
@@ -78,7 +79,7 @@ public final class ProxyRegistrarFactoryImpl implements ProxyRegistrarFactory {
         return (new ProxyRegistrarImpl(this.m_uriUtils, client, proxy,
                 listener, this.m_messageFactory, this.m_transportLayer,
                 this.m_transactionTracker, this.m_offerAnswerFactory,
-                this.socketListener, this.callSocketListener, 
+                this.serverAddress, this.callSocketListener, 
                 this.m_sipClientTracker, this.m_idleSipSessionListener));
     }
 }

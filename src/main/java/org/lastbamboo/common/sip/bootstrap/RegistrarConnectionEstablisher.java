@@ -15,8 +15,8 @@ import org.littleshoot.util.ConnectionMaintainerListener;
  * registrars.
  */
 public final class RegistrarConnectionEstablisher
-    implements ConnectionEstablisher<URI,URI>
-    {
+    implements ConnectionEstablisher<URI,URI> {
+    
     /**
      * The log for this class.
      */
@@ -57,60 +57,62 @@ public final class RegistrarConnectionEstablisher
      * for single registrations.
      * @param listener The listener to be notified of registration events.
      */
-    public RegistrarConnectionEstablisher (final URI client,
-        final ProxyRegistrarFactory registrarFactory,
-        final ProxyRegistrationListener listener)
-        {
+    public RegistrarConnectionEstablisher(final URI client,
+            final ProxyRegistrarFactory registrarFactory,
+            final ProxyRegistrationListener listener) {
         this.m_client = client;
         this.m_registrarFactory = registrarFactory;
         this.m_listener = listener;
 
-        this.m_connectionMaintainerListeners =
-                new HashMap<URI,ConnectionMaintainerListener<URI>> ();
-        
-        this.m_myListener = new MyListener ();
-        }
+        this.m_connectionMaintainerListeners = 
+            new HashMap<URI, ConnectionMaintainerListener<URI>>();
+
+        this.m_myListener = new MyListener();
+    }
 
     /**
      * The registration listener that is notified of single registrations.
      */
-    private class MyListener implements ProxyRegistrationListener
-        {
-        public void registered (final URI client, final URI proxy)
-            {
-            final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-            connectionMaintainerListener.connected (proxy);
-            RegistrarConnectionEstablisher.this.m_listener.registered (client, proxy);
-            }
-
-        public void reRegistered (final URI client, final URI proxy)
-            {
-            final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-            connectionMaintainerListener.reconnected ();
-            RegistrarConnectionEstablisher.this.m_listener.reRegistered (client, proxy);
-            }
-
-        public void registrationFailed (final URI client, final URI proxy)
-            {
-            final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                    RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-            connectionMaintainerListener.connectionFailed ();
-            RegistrarConnectionEstablisher.this.stopNotifying (proxy);
-            RegistrarConnectionEstablisher.this.m_listener.registrationFailed (client, proxy);
-            }
-
-        public void unregistered (final URI client, final URI proxy)
-            {
-            final ConnectionMaintainerListener<URI> connectionMaintainerListener =
-                RegistrarConnectionEstablisher.this.getConnectionMaintainerListener (proxy);
-
-            connectionMaintainerListener.disconnected ();
-            RegistrarConnectionEstablisher.this.stopNotifying (proxy);
-            RegistrarConnectionEstablisher.this.m_listener.unregistered (client, proxy);
-            }
+    private class MyListener implements ProxyRegistrationListener {
+        public void registered(final URI client, final URI proxy) {
+            final ConnectionMaintainerListener<URI> connectionMaintainerListener = 
+                RegistrarConnectionEstablisher.this
+                    .getConnectionMaintainerListener(proxy);
+            connectionMaintainerListener.connected(proxy);
+            RegistrarConnectionEstablisher.this.m_listener.registered(client,
+                    proxy);
         }
+
+        public void reRegistered(final URI client, final URI proxy) {
+            final ConnectionMaintainerListener<URI> connectionMaintainerListener = 
+                RegistrarConnectionEstablisher.this
+                    .getConnectionMaintainerListener(proxy);
+            connectionMaintainerListener.reconnected();
+            RegistrarConnectionEstablisher.this.m_listener.reRegistered(client,
+                    proxy);
+        }
+
+        public void registrationFailed(final URI client, final URI proxy) {
+            final ConnectionMaintainerListener<URI> connectionMaintainerListener = 
+                RegistrarConnectionEstablisher.this
+                    .getConnectionMaintainerListener(proxy);
+            connectionMaintainerListener.connectionFailed();
+            RegistrarConnectionEstablisher.this.stopNotifying(proxy);
+            RegistrarConnectionEstablisher.this.m_listener.registrationFailed(
+                    client, proxy);
+        }
+
+        public void unregistered(final URI client, final URI proxy) {
+            final ConnectionMaintainerListener<URI> connectionMaintainerListener = 
+                RegistrarConnectionEstablisher.this
+                    .getConnectionMaintainerListener(proxy);
+
+            connectionMaintainerListener.disconnected();
+            RegistrarConnectionEstablisher.this.stopNotifying(proxy);
+            RegistrarConnectionEstablisher.this.m_listener.unregistered(client,
+                    proxy);
+        }
+    }
 
     /**
      * Signals us to start notifying a given connection maintainer listener of
@@ -119,15 +121,13 @@ public final class RegistrarConnectionEstablisher
      * @param registrar The URI of the registrar.
      * @param listener The listener to notify.
      */
-    private void startNotifying (final URI registrar,
-        final ConnectionMaintainerListener<URI> listener)
-        {
-        synchronized (this.m_connectionMaintainerListeners)
-            {
+    private void startNotifying(final URI registrar,
+            final ConnectionMaintainerListener<URI> listener) {
+        synchronized (this.m_connectionMaintainerListeners) {
             // We should not yet have a listener for the given registrar.
-            this.m_connectionMaintainerListeners.put (registrar, listener);
-            }
+            this.m_connectionMaintainerListeners.put(registrar, listener);
         }
+    }
 
     /**
      * Signals us to stop notifying the connection maintainer listener of
@@ -135,13 +135,11 @@ public final class RegistrarConnectionEstablisher
      *
      * @param registrar The URI of the registrar.
      */
-    private void stopNotifying (final URI registrar)
-        {
-        synchronized (this.m_connectionMaintainerListeners)
-            {
-            this.m_connectionMaintainerListeners.remove (registrar);
-            }
+    private void stopNotifying(final URI registrar) {
+        synchronized (this.m_connectionMaintainerListeners) {
+            this.m_connectionMaintainerListeners.remove(registrar);
         }
+    }
 
     /**
      * Returns the connection maintainer listener that is listening for
@@ -153,35 +151,30 @@ public final class RegistrarConnectionEstablisher
      * connection events related to a given registrar.
      */
     private ConnectionMaintainerListener<URI> getConnectionMaintainerListener(
-        final URI registrar)
-        {
-        return this.m_connectionMaintainerListeners.get (registrar);
-        }
+            final URI registrar) {
+        return this.m_connectionMaintainerListeners.get(registrar);
+    }
 
     /**
      * {@inheritDoc}
      */
-    public void establish (final URI serverId,
-        final ConnectionMaintainerListener<URI> listener)
-        {
-        LOG.debug ("Registering with: " + serverId);
+    public void establish(final URI serverId,
+            final ConnectionMaintainerListener<URI> listener) {
+        LOG.debug("Registering with: " + serverId);
 
-        this.startNotifying (serverId, listener);
+        this.startNotifying(serverId, listener);
 
-        try
-            {
-            final ProxyRegistrar registrar =
-                this.m_registrarFactory.getRegistrar (this.m_client, serverId,
-                                                 this.m_myListener);
+        try {
+            final ProxyRegistrar registrar = 
+                this.m_registrarFactory.getRegistrar(this.m_client, serverId, 
+                    this.m_myListener);
 
-            registrar.register ();
-            }
-        catch (final RuntimeException e)
-            {
+            registrar.register();
+        } catch (final RuntimeException e) {
             LOG.warn("Could not either access the registrar or register", e);
-            this.stopNotifying (serverId);
+            this.stopNotifying(serverId);
 
             throw (e);
-            }
         }
     }
+}

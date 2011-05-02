@@ -1,6 +1,7 @@
 package org.lastbamboo.common.sip.bootstrap;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 
 import org.lastbamboo.common.offer.answer.OfferAnswer;
@@ -59,9 +60,9 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
 
     private final IdleSipSessionListener m_idleSipSessionListener;
 
-    private final SessionSocketListener socketListener;
-
     private final SessionSocketListener callSocketListener;
+
+    private final InetSocketAddress serverAddress;
 
     /**
      * Creates a new class for registering with an individual SIP proxy.
@@ -90,7 +91,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
             final SipTcpTransportLayer transportLayer,
             final SipTransactionTracker transactionTracker,
             final OfferAnswerFactory offerAnswerFactory,
-            final SessionSocketListener socketListener,
+            final InetSocketAddress serverAddress,
             final SessionSocketListener callSocketListener,
             final SipClientTracker clientTracker,
             final IdleSipSessionListener idleSipSessionListener) {
@@ -100,7 +101,7 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
         this.m_uriUtils = uriUtils;
         this.m_messageFactory = messageFactory;
         this.m_offerAnswerFactory = offerAnswerFactory;
-        this.socketListener = socketListener;
+        this.serverAddress = serverAddress;
         this.callSocketListener = callSocketListener;
         this.m_sipClientTracker = clientTracker;
         this.m_transactionTracker = transactionTracker;
@@ -112,11 +113,11 @@ public final class ProxyRegistrarImpl implements ProxyRegistrar {
         final CrlfDelayCalculator calculator = new DefaultCrlfDelayCalculator();
         try {
             final SipClient client = new SipClientImpl(this.m_client,
-                    this.m_proxy, this.m_messageFactory,
-                    this.m_transactionTracker, this.m_offerAnswerFactory,
-                    this.socketListener, this.callSocketListener, this.m_uriUtils,
-                    this.m_transportLayer, this.m_sipClientTracker, calculator,
-                    this.m_idleSipSessionListener);
+                this.m_proxy, this.m_messageFactory,
+                this.m_transactionTracker, this.m_offerAnswerFactory,
+                this.serverAddress, this.callSocketListener, this.m_uriUtils,
+                this.m_transportLayer, this.m_sipClientTracker, calculator,
+                this.m_idleSipSessionListener);
 
             client.connect();
             client.register();
