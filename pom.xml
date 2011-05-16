@@ -14,7 +14,7 @@
 
     <properties>
          <slf4j.version>1.6.1</slf4j.version>
-         <ls.version>1.0-SNAPSHOT</ls.version>
+         <project.version>1.0-SNAPSHOT</project.version>
     </properties>
 
     <licenses>
@@ -53,8 +53,8 @@
 
         <dependency>
             <groupId>org.littleshoot</groupId>
-            <artifactId>ice</artifactId>
-            <version>${ls.version}</version>
+            <artifactId>littleshoot-ice</artifactId>
+            <version>${project.version}</version>
         </dependency> 
 
         <dependency>
@@ -66,45 +66,20 @@
         <dependency>
             <groupId>org.littleshoot</groupId>
             <artifactId>p2p-sockets</artifactId>
-            <version>${ls.version}</version>
+            <version>${project.version}</version>
         </dependency> 
 
         <dependency>
             <groupId>org.littleshoot</groupId>
             <artifactId>sip-client</artifactId>
-            <version>${ls.version}</version>
+            <version>${project.version}</version>
         </dependency> 
 
         <dependency>
             <groupId>org.littleshoot</groupId>
             <artifactId>util</artifactId>
-            <version>${ls.version}</version>
+            <version>${project.version}</version>
         </dependency> 
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
 
     </dependencies>
 
