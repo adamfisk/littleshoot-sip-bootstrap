@@ -156,4 +156,14 @@ public final class SipClientLauncher implements P2PClient {
         return tcpUdpSocket.newSocket(sipUri);
     }
 
+    public Socket newRawSocket(final URI uri) throws IOException, 
+        NoAnswerException {
+        return newSocket(uri);
+    }
+
+    public Socket newRawUnreliableSocket(final URI uri) throws IOException,
+        NoAnswerException {
+        return newUnreliableSocket(uri);
+    }
+
 }
