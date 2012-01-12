@@ -166,4 +166,9 @@ public final class SipClientLauncher implements P2PClient {
         return newUnreliableSocket(uri);
     }
 
+    @Override
+    public void logout() {
+        // TODO Does nothing for now -- we need to implement this!!
+    }
+
 }
