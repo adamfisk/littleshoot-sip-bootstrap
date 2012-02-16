@@ -10,6 +10,7 @@ import org.lastbamboo.common.offer.answer.OfferAnswerFactory;
 import org.lastbamboo.common.offer.answer.OfferAnswerTransactionListener;
 import org.lastbamboo.common.p2p.DefaultTcpUdpSocket;
 import org.lastbamboo.common.p2p.P2PClient;
+import org.lastbamboo.common.p2p.P2PConnectionListener;
 import org.lastbamboo.common.p2p.TcpUdpSocket;
 import org.lastbamboo.common.sip.client.SipClient;
 import org.lastbamboo.common.sip.client.SipClientTracker;
@@ -169,6 +170,11 @@ public final class SipClientLauncher implements P2PClient {
     @Override
     public void logout() {
         // TODO Does nothing for now -- we need to implement this!!
+    }
+
+    @Override
+    public void addConnectionListener(P2PConnectionListener listener) {
+        // TODO Not supported for now.
     }
 
 }
