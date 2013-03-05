@@ -132,7 +132,7 @@ public final class SipClientLauncher implements P2PClient {
         }
 
         final IceMediaStreamDesc stream = IceMediaStreamDesc.newReliable();
-        final TcpUdpSocket tcpUdpSocket = new DefaultTcpUdpSocket(client,
+        final TcpUdpSocket<Socket> tcpUdpSocket = new DefaultTcpUdpSocket(client,
                 this.m_offerAnswerFactory, this.m_relayWaitTime, stream);
 
         return tcpUdpSocket.newSocket(sipUri);
@@ -151,7 +151,7 @@ public final class SipClientLauncher implements P2PClient {
             new IceMediaStreamDesc(true, true, "application", "udp", 1, true, 
                     true);
             //IceMediaStreamDesc.newUnreliableUdpStream();
-        final TcpUdpSocket tcpUdpSocket = new DefaultTcpUdpSocket(client,
+        final TcpUdpSocket<Socket> tcpUdpSocket = new DefaultTcpUdpSocket(client,
                 this.m_offerAnswerFactory, this.m_relayWaitTime, desc);
 
         return tcpUdpSocket.newSocket(sipUri);
